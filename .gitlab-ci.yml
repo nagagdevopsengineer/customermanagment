@@ -29,7 +29,7 @@ deploy-arrivnow:
   image: vapprtech/awskubectl:latest
   before_script:
     - aws eks update-kubeconfig --name vapprtech --region us-east-2 
-    - kubectl create namespace customermanagment  --dry-run=client -o yaml | kubectl apply -f -   
+    - kubectl create namespace customermanagement  --dry-run=client -o yaml | kubectl apply -f -   
   script:
     - kubectl apply -f manifest/customermanagement
     - sleep 60
