@@ -4,7 +4,7 @@ RUN apt-get install -y maven
 #ADD pom.xml /code/pom.xml 
 #RUN ["mvn", "dependency:resolve"]   
 #RUN  ["mvn","clean","package"]
-COPY target/customermanagement.jar customermanagement.jar
+ADD  target/customermanagement.jar customermanagement.jar
 RUN bash -c 'touch /customermanagement.jar'
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","customermanagement.jar"]
