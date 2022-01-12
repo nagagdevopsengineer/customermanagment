@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-@ComponentScan(basePackages={"com.arrivnow"})
 public class CustomermanagementApplication
 {
 
