@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customermanagement
+  namespace: customermanagement
+  labels:
+    app: customermanagement
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customermanagement
+  template:
+    metadata:
+      labels:
+        app: customermanagement
+    spec:
+      containers:
+      - name: customermanagement
+        image: vapprtech/customermanagement-openjdk:11
+        ports:
+        - name: https
+          containerPort: 3000
+

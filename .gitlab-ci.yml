@@ -1,0 +1,42 @@
+image: docker:19.03.12
+
+variables:
+  BUILD_IMAGE: "vapprtech/customermanagement-openjdk:11"
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:19.03.12-dind
+
+stages:          # List of stages for jobs, and their order of execution
+  - build_image
+  - deploy_customermanagment
+
+docker-build-image:
+  stage: build_image
+  script:
+    - docker info
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker build -t ${BUILD_IMAGE} -f Dockerfile .
+    - docker push  ${BUILD_IMAGE}
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "developer"'
+      exists:
+        - Dockerfile
+      when: always
+
+deploy-arrivnow:
+  stage: deploy_arrivnow
+  image: vapprtech/awskubectl:latest
+  before_script:
+    - aws eks update-kubeconfig --name vapprtech --region us-east-2 
+    - kubectl create namespace customermanagment  --dry-run=client -o yaml | kubectl apply -f -   
+  script:
+    - kubectl apply -f manifest/customermanagment
+    - sleep 60
+    - kubectl get pods -n customermanagment --field-selector=status.phase=Running
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "developer"'
+      changes:
+        - manifest/customermanagment
+      when: always
+

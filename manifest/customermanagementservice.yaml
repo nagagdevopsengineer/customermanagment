@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: customermanagment
+  namespace: customermanagement
+  labels:
+    app: customermanagement
+spec:
+  ports:
+  - name: https
+    port: 3333
+    targetPort: 3333
+  selector:
+    app: customermmanagement
+
