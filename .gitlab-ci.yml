@@ -38,5 +38,5 @@ deploy-arrivnow:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "master"'
       changes:
         - manifest/customermanagement
-      when: manual
+      when: always
 
