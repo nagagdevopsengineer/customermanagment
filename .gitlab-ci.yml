@@ -31,12 +31,12 @@ deploy-arrivnow:
     - aws eks update-kubeconfig --name vapprtech --region us-east-2 
     - kubectl create namespace customermanagment  --dry-run=client -o yaml | kubectl apply -f -   
   script:
-    - kubectl apply -f manifest/customermanagment
+    - kubectl apply -f manifest/customermanagement
     - sleep 60
     - kubectl get pods -n customermanagment --field-selector=status.phase=Running
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "master"'
       changes:
-        - manifest/customermanagment
+        - manifest/customermanagement
       when: always
 
