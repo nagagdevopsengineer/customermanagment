@@ -34,6 +34,7 @@ deploy-arrivnow:
     - kubectl apply -f manifest/customermanagement
     - sleep 60
     - kubectl get pods -n customermanagement --field-selector=status.phase=Running
+    - kubectl get svc -n customermanagement
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "master"'
       changes:
