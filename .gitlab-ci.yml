@@ -24,7 +24,7 @@ docker-build-image:
         - Dockerfile
       when: always
 
-deploy-arrivnow:
+deploy-customermanagement:
   stage: deploy_customermanagment
   image: vapprtech/awskubectl:latest
   before_script:
