@@ -12,7 +12,7 @@ public class CustomermanagementApplication
 
     @GetMapping("/test")
     public String TestApi(){
-        return "Hello Pawan";
+        return "Hello Customer ";
     }
 
 	public static void main(String[] args) {
