@@ -19,6 +19,5 @@ spec:
       - name: customermanagement
         image: vapprtech/customermanagement-openjdk:11
         ports:
-        - name: https
-          containerPort: 8080
-
+        - name: http
+          containerPort: 3333:8080
