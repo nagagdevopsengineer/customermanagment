@@ -8,8 +8,7 @@ metadata:
 spec:
   ports:
   - name: https
-    port: 3333
+    port: 443
     targetPort: 8080
   selector:
     app: customermmanagement
-
