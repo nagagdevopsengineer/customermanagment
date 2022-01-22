@@ -6,5 +6,5 @@ RUN apt-get install -y maven
 #RUN  ["mvn","clean","package"]
 ADD  target/customermanagement.jar customermanagement.jar
 RUN bash -c 'touch /customermanagement.jar'
-EXPOSE 3333:8080
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","customermanagement.jar"]
