@@ -1,4 +1,4 @@
-package domain;
+package com.arrivnow.customermanagement.customermanagement.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

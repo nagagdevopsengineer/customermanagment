@@ -1,11 +1,11 @@
-package controller;
+package com.arrivnow.customermanagement.customermanagement.controller;
 
-import domain.Client;
+import com.arrivnow.customermanagement.customermanagement.domain.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import repository.ClientRepository;
+import com.arrivnow.customermanagement.customermanagement.repository.ClientRepository;
 
 @RestController
 public class CLientController {
