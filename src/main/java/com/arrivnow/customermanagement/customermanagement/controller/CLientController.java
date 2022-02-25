@@ -44,7 +44,7 @@ public class CLientController {
     public Client updateStatus(@RequestBody boolean status ,UUID uuid)
     {
         Client client = clientServices.getCLientInfoByUuid(uuid);
-        client.setApproved(status);
+        client.setIsApproved(status);
         return clientRepository.save(client);
 
     }
