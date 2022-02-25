@@ -14,7 +14,7 @@ build:
         paths:
             - target/customermanagement.jar
     only:
-        - master
+        - develop
 
 deploy:
     stage: deploy
