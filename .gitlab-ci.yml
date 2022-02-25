@@ -1,43 +1,37 @@
-image: docker:19.03.12
+stages:
+    - build
+    - deploy
 
-variables:
-  BUILD_IMAGE: "vapprtech/customermanagement-openjdk:11"
-  DOCKER_TLS_CERTDIR: "/certs"
+build:
+    stage: build
+    image:  maven:3.6.1-jdk-8-slim
+    script:
+        - echo "Building app..."
+        - mvn clean install
+        - echo "Finished building the app."
+    artifacts:
+        expire_in: 1 week
+        paths:
+            - target/customermanagement.jar
+    only:
+        - master
 
-services:
-  - docker:19.03.12-dind
-
-stages:          # List of stages for jobs, and their order of execution
-  - build_image
-  - deploy_customermanagment
-
-docker-build-image:
-  stage: build_image
-  script:
-    - docker info
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    - docker build -t ${BUILD_IMAGE} -f Dockerfile .
-    - docker push  ${BUILD_IMAGE}
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "master"'
-      exists:
-        - Dockerfile
-      when: always
-
-deploy-customermanagement:
-  stage: deploy_customermanagment
-  image: vapprtech/awskubectl:latest
-  before_script:
-    - aws eks update-kubeconfig --name vapprtech --region us-east-2 
-    - kubectl create namespace customermanagement  --dry-run=client -o yaml | kubectl apply -f -   
-  script:
-    - kubectl apply -f manifest/customermanagement
-    - sleep 60
-    - kubectl get pods -n customermanagement --field-selector=status.phase=Running
-    - kubectl get svc -n customermanagement
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "master"'
-      changes:
-        - manifest/customermanagement
-      when: always
-
+deploy:
+    stage: deploy
+    image: alpine:3.11
+    before_script:
+        - apk update && apk add openssh-client bash
+        - mkdir -p ~/.ssh
+        - eval $(ssh-agent -s)
+        - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+        - touch ~/.ssh/config
+        - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+        - ssh-keyscan -H $DEPLOY_SERVER_IP >> ~/.ssh/known_hosts
+    script:
+        - echo "Deploying started..."
+        - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl stop consoleapp.service"
+        - scp ./target/consoleapp.jar ubuntu@$DEPLOY_SERVER_IP:~/console-app/
+        - ssh ubuntu@$DEPLOY_SERVER_IP "sudo systemctl start consoleapp.service"
+        - echo "Finished deploying the app."
+    only:
+        - develop
