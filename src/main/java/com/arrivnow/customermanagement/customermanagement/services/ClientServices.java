@@ -17,14 +17,17 @@ public class ClientServices
 
     public Client getCLientInfoByUuid(UUID uuid)
     {
+        System.out.println("before getting client by uuid ");
         Optional<Client> client=clientRepository.findByUuid(uuid);
-        client.get().getEmail();
+
+        System.out.println("-------->"+client.get().getEmail()+"------->"+client.get().getId());
        return client.get();
     }
 
     public Client updateCLient(Client client)
     {
-
+       Client client1=clientRepository.findByUuid(client.getUuid()).get();
+       client.setId(client1.getId());
         return clientRepository.save(client);
     }
 

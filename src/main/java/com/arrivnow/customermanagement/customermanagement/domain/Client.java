@@ -38,14 +38,20 @@ public class Client
             ", gst_Number='" + gst_Number + '\'' +
             ", gst_url='" + gst_url + '\'' +
             ", contactNumber='" + contactNumber + '\'' +
+
             '}';
     }
+
     @Column(name="gstnumber")
     private String gst_Number;
     @Column(name="gsturl")
     private String gst_url;
     @Column(name="contactnumber")
     private String contactNumber;
+
+  /*  @OneToMany(mappedBy = "client",cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private Set<ClientContractors> clientcontractors;*/
+
 
 
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
 import java.util.UUID;
 
 @Table(name="client_contractors")
@@ -16,13 +15,12 @@ public class ClientContractors
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonIgnore
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="contractor_id")
     private Contractor contractor;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="client_id")
     private Client client;
-
     @Column(name="uuid")
     private UUID uuid;
 }

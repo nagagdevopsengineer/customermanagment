@@ -41,19 +41,18 @@ public class CLientController {
     }
 
     @PutMapping("/approveCLient")
-    public Client updateStatus(@RequestBody boolean status ,UUID uuid)
+    public Client updateStatus(@RequestBody boolean status ,@RequestParam UUID uuid)
     {
+        System.out.println("Approve client ");
         Client client = clientServices.getCLientInfoByUuid(uuid);
         client.setIsApproved(status);
         return clientRepository.save(client);
-
     }
 
     @GetMapping("/clients")
     public List<Client> getALLClients()
     {
         return clientServices.getAllClients();
-
     }
 
 

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -34,6 +35,9 @@ public class Contractor
     private String gst_url;
     @Column(name="contactnumber")
     private String contactNumber;
+
+    /*@OneToMany(mappedBy = "contractor",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    Set<ClientContractors> clientContractors;*/
 
 
 
