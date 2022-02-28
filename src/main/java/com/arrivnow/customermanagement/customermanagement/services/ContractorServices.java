@@ -4,6 +4,7 @@ import com.arrivnow.customermanagement.customermanagement.domain.Client;
 import com.arrivnow.customermanagement.customermanagement.domain.ClientContractors;
 import com.arrivnow.customermanagement.customermanagement.domain.Contractor;
 import com.arrivnow.customermanagement.customermanagement.dto.ContractorRequestDto;
+import com.arrivnow.customermanagement.customermanagement.repository.ContractorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class ContractorServices
     @Autowired
     ClientContractorServices clientContractorServices;
 
-
-
+    @Autowired
+    ContractorRepository contractorRepository;
 
 
     public Contractor addNewContractor(ContractorRequestDto contractorRequestDto)
@@ -42,6 +43,20 @@ public class ContractorServices
     }
 
 
+    public Contractor getContractorInfoByUUId(UUID uuid)
+    {
+        Contractor contractor = contractorRepository.findByUuid(uuid);
+        return contractor;
+    }
+
+
+    public Contractor updateContractor(Contractor contractor)
+    {
+        Contractor contractor1 =getContractorInfoByUUId(contractor.getUuid());
+        contractor.setId(contractor1.getId());
+       return  contractorRepository.save(contractor);
+
+    }
 
 
 

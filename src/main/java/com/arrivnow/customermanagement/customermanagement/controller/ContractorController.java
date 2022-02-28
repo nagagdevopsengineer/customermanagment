@@ -8,11 +8,9 @@ import com.arrivnow.customermanagement.customermanagement.services.ClientContrac
 import com.arrivnow.customermanagement.customermanagement.services.ClientServices;
 import com.arrivnow.customermanagement.customermanagement.services.ContractorServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -30,12 +28,63 @@ public class ContractorController
    @PostMapping("/contractors")
     public Contractor addContractor(@RequestBody ContractorRequestDto contractorRequestDto)
     {
-
         return contractorServices.addNewContractor(contractorRequestDto);
+    }
 
+    @GetMapping("/getAllContractorsByclient")
+    public List<Contractor> getCoNtractor(@RequestParam String clientid)
+    {
+        UUID uuid=UUID.fromString(clientid);
+        List<Contractor> contractors = clientContractorServices.getALlContractorsByCLient(uuid);
 
+      return contractors;
+    }
+
+    @GetMapping("/contractorinfoByCLient")
+    public Contractor getCOntarctorInfoByCLientAndContractor(@RequestParam String contractoruuid ,@RequestParam String clientuuid)
+    {
+        UUID cuuid =UUID.fromString(clientuuid);
+        UUID contracuuid= UUID.fromString(contractoruuid);
+        Client client = clientServices.getCLientInfoByUuid(cuuid);
+        Contractor contractor = contractorServices.getContractorInfoByUUId(contracuuid);
+       return  clientContractorServices.getContarctorByClientANdCOntarctor(client, contractor);
 
     }
+
+    @GetMapping("/contractorInfo")
+    public Contractor getContractorInfo(@RequestParam String contractoruuid)
+    {
+        UUID uuid =UUID.fromString(contractoruuid);
+        Contractor contractor =contractorServices.getContractorInfoByUUId(uuid);
+
+        return  contractor;
+
+    }
+
+@PutMapping("/updateContractor")
+    public Contractor updateContarctorProfile(@RequestBody Contractor contractor)
+    {
+
+      Contractor contractor1= contractorServices.updateContractor(contractor);
+      return contractor1;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
